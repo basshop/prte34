@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { 
-  Menu, CircleDollarSign, Home, ShoppingBag, Gamepad, CreditCard, DollarSign, 
+  Menu, CircleDollarSign, Home, DollarSign, 
   TableOfContents, MessageSquare, ClipboardList 
 } from "lucide-react";
 import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet";
@@ -12,26 +12,19 @@ import { cn } from "@/lib/utils";
 import Head from 'next/head';
 import { ProfileDropdown } from "@/components/ui/ProfileDropdown";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-
-import { FaDiscord, FaFacebook } from "react-icons/fa";
+import Img from "next/image";
+import { FaFacebook } from "react-icons/fa";
 
 export default function Navbar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
-  const [open, setOpen] = useState(false)
   const [contactOpen, setContactOpen] = useState(false)
-    const [point, setBalance] = useState(0);
+  const [point] = useState(0);
 
   useEffect(() => {
     async function checkLogin() {
       try {
         const res = await fetch('/api/me', { credentials: 'include' })
-        if (res.ok) {
-          setIsLoggedIn(true)
-          
-          
-        } else {
-          setIsLoggedIn(false)
-        }
+        setIsLoggedIn(res.ok)
       } catch {
         setIsLoggedIn(false)
       }
@@ -58,42 +51,36 @@ export default function Navbar() {
         </Head>
         
         <div className="flex items-center space-x-2 mr-8">
-          <a href="/">
-            <img src="/img/image.png" alt="logo" className="h-10 w-auto" />
-          </a>
+          <Link href="/">
+            <Img src="/img/image.png" alt="logo" width={40} height={40} className="h-10 w-auto" />
+          </Link>
         </div>
          
         {/* Desktop Menu */}
         <ul className="hidden md:flex space-x-5 items-center flex-1 justify-start" >
-          <li className="flex items-center space-x-1 text-sm text-gray-700 hover:text-[#17aeff] font-medium" style={{  }}
-
->
+          <li className="flex items-center space-x-1 text-sm text-gray-700 hover:text-[#17aeff] font-medium">
             <Link href="/" className="flex items-center space-x-1">
               <Home className="h-4 w-4" />
               <span>หน้าหลัก</span>
             </Link>
           </li>
 
-          <li className="text-sm text-gray-700 hover:text-[#17aeff] font-medium"style={{  }}
-
->
+          <li className="text-sm text-gray-700 hover:text-[#17aeff] font-medium">
             <Link href="/list" className="flex items-center space-x-1">
               <ClipboardList className="h-4 w-4" />
               <span>รายการ</span>
             </Link>
           </li>
-          <li className="text-sm text-gray-700 hover:text-[#17aeff] font-medium"style={{  }}
 
->
+          <li className="text-sm text-gray-700 hover:text-[#17aeff] font-medium">
             <Link href="/list" className="flex items-center space-x-1">
               <TableOfContents className="h-4 w-4" />
               <span>กิจกรรม</span>
             </Link>
           </li>
+
           <li className="text-sm text-gray-700">
-            <Link href="/amount" className="flex items-center space-x-1 hover:text-[#17aeff] font-medium"style={{  }}
->
-  
+            <Link href="/amount" className="flex items-center space-x-1 hover:text-[#17aeff] font-medium">
               <CircleDollarSign className="h-4 w-4" />
               <span>ยอดเงิน</span>
             </Link>
@@ -103,9 +90,7 @@ export default function Navbar() {
           <li 
             onClick={() => setContactOpen(true)} 
             className="text-sm text-gray-700 hover:text-[#17aeff] font-medium cursor-pointer flex items-center space-x-1"
-          style={{  }}
-
->
+          >
             <MessageSquare className="h-4 w-4" />
             <span>ติดต่อ</span>
           </li>
@@ -117,16 +102,15 @@ export default function Navbar() {
             <>
               <div className="flex items-center px-2.5 py-3.5 bg-[#a9e1ff] text-sky-700 rounded-full border border-sky-500 shadow-sm hover:bg-[#a9e1ff] transition text-xs h-8 min-h-0"> 
                 <DollarSign className="h-4 w-4" />
-                <span className="text-xs font-medium">{new Intl.NumberFormat("th-TH", {
-                }).format(point)}</span>
+                <span className="text-xs font-medium">{new Intl.NumberFormat("th-TH").format(point)}</span>
               </div>
               <ProfileDropdown />
             </>
           ) : (
             <Link href="#">
               <Button
-                className="w-full rounded-[10px] bg-gradient-to-r   border-none transition-opacity duration-300 text-white hover:opacity-90 px-4 py-2" style={{ background: 'linear-gradient(90deg, #17aeff 0%, #c2e4ff 100%)' }}
-
+                className="w-full rounded-[10px] bg-gradient-to-r border-none transition-opacity duration-300 text-white hover:opacity-90 px-4 py-2" 
+                style={{ background: 'linear-gradient(90deg, #17aeff 0%, #c2e4ff 100%)' }}
               >
                 เริ่มต้นกับเรา
               </Button>
@@ -157,7 +141,7 @@ export default function Navbar() {
                     <Link href="/list">รายการ</Link>
                   </li>
                   <li className="flex items-center space-x-1 font-medium">
-                    <div className="h-5 w-5" />
+                    <div className="h-5 w-5 " />
                     <TableOfContents className="h-4 w-4" />
                     <Link href="/list">กิจกรรม</Link>
                   </li>
@@ -174,7 +158,6 @@ export default function Navbar() {
                     <MessageSquare className="h-4 w-4" />
                     <span>ติดต่อ</span>
                   </li>
-                  
                 </ul>
 
                 <div className="flex items-center text-sm text-gray-700 py-2">
@@ -188,20 +171,17 @@ export default function Navbar() {
                 </div>
 
                 <div className="flex items-center justify-between px-1">
-                  <Link href="#" className="flex items-center space-x-2 text-gray-700">
-                    <div className="h-5 w-5" />
-                    {isLoggedIn ? (
-                      <ProfileDropdown />
-                    ) : (
-                      <Link href="#">
-                        <Button
-                          className="w-full rounded-[10px] bg-gradient-to-r from-[#17aeff] via-[#17aeff] to-[#c2e4ff] border-none transition-opacity duration-300 text-white hover:opacity-90"
-                        >
-                          เริ่มต้นกับเรา
-                        </Button>
-                      </Link>
-                    )}
-                  </Link>
+                  {isLoggedIn ? (
+                    <ProfileDropdown />
+                  ) : (
+                    <Link href="#">
+                      <Button
+                        className="w-full rounded-[10px] bg-gradient-to-r from-[#17aeff] via-[#17aeff] to-[#c2e4ff] border-none transition-opacity duration-300 text-white hover:opacity-90"
+                      >
+                        เริ่มต้นกับเรา
+                      </Button>
+                    </Link>
+                  )}
                 </div>
               </div>
             </SheetContent>
@@ -210,44 +190,30 @@ export default function Navbar() {
       </div>
 
       {/* Contact Dialog */}
-    <Dialog open={contactOpen} onOpenChange={setContactOpen}>
-  <DialogContent className="animate-fade-in-out1 max-w-md rounded-2xl p-6 shadow-lg border border-gray-200">
-    <DialogHeader>
-      <DialogTitle>ติดต่อเรา</DialogTitle>
-      <p className="text-sm text-muted-foreground">ช่องทางการติดต่อ</p>
-    </DialogHeader>
+      <Dialog open={contactOpen} onOpenChange={setContactOpen}>
+        <DialogContent className="animate-fade-in-out1 max-w-md rounded-2xl p-6 shadow-lg border border-gray-200">
+          <DialogHeader>
+            <DialogTitle>ติดต่อเรา</DialogTitle>
+            <p className="text-sm text-muted-foreground">ช่องทางการติดต่อ</p>
+          </DialogHeader>
 
-    <div className="space-y-3">
-      {/* <div className="flex items-center space-x-3 p-2 rounded-md bg-zinc-100 hover:bg-zinc-200">
-        <FaDiscord className="h-6 w-6 text-indigo-500 " />
-        <div>
-          <p className="font-medium">Discord</p>
-          <Link
-            href="https://discord.gg/gDCKXNcCvF"
-            target="_blank"
-            className="text-sm text-zinc-600 hover:underline"
-          >
-            discord.gg/gDCKXNcCvF
-          </Link>
-        </div>
-      </div> */}
-
-      <div className="flex items-center space-x-3 p-2 rounded-md bg-zinc-100 hover:bg-zinc-200">
-        <FaFacebook className="h-6 w-6 text-blue-600" />
-        <div>
-          <p className="font-medium">Facebook</p>
-          <Link
-            href="https://www.facebook.com/kasemprem.thongun"
-            target="_blank"
-            className="text-sm text-zinc-600 hover:underline"
-          >
-            facebook.com/Kasemprem
-          </Link>
-        </div>
-      </div>
-    </div>
-  </DialogContent>
-</Dialog>
+          <div className="space-y-3">
+            <div className="flex items-center space-x-3 p-2 rounded-md bg-zinc-100 hover:bg-zinc-200">
+              <FaFacebook className="h-6 w-6 text-blue-600" />
+              <div>
+                <p className="font-medium">Facebook</p>
+                <Link
+                  href="https://www.facebook.com/kasemprem.thongun"
+                  target="_blank"
+                  className="text-sm text-zinc-600 hover:underline"
+                >
+                  facebook.com/Kasemprem
+                </Link>
+              </div>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </nav>
   )
 }
