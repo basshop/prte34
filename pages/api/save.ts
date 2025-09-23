@@ -1,8 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { db } from "@/lib/db";
+import type { RowDataPacket } from "mysql2/promise";
 
 // กำหนด type ให้ตรงกับตาราง number_value
-interface NumberValueRow {
+interface NumberValueRow extends RowDataPacket {
   id: number;
   value: number;
 }
@@ -22,9 +23,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
   } else if (req.method === "GET") {
     try {
-      const [rows] = await db.query(
+      const [rows] = await db.query<NumberValueRow[]>(
         "SELECT * FROM number_value WHERE id = 1"
-      ) as [NumberValueRow[], any];
+      );
 
       const row = rows[0] ?? null;
 
