@@ -1,0 +1,16 @@
+{
+  "/": "pages/index.js",
+  "/_app": "pages/_app.js",
+  "/_document": "pages/_document.js",
+  "/_error": "pages/_error.js",
+  "/amount": "pages/amount.js",
+  "/api/activities": "pages/api/activities.js",
+  "/api/save": "pages/api/save.js",
+  "/api/students": "pages/api/students.js",
+  "/backend/activity": "pages/backend/activity.js",
+  "/backend/amount": "pages/backend/amount.js",
+  "/backend/dashboard": "pages/backend/dashboard.js",
+  "/backend/record": "pages/backend/record.js",
+  "/list": "pages/list.js",
+  "/succeed": "pages/succeed.js"
+}
