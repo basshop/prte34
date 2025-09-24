@@ -2,29 +2,32 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { 
-  Menu, CircleDollarSign, Home, DollarSign, 
+  Menu, CircleDollarSign, Home, ShoppingBag, Gamepad, CreditCard, DollarSign, 
   TableOfContents, MessageSquare, ClipboardList 
 } from "lucide-react";
 import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import Head from 'next/head';
 import { ProfileDropdown } from "@/components/ui/ProfileDropdown";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import Img from "next/image";
 import { FaFacebook } from "react-icons/fa";
 
 export default function Navbar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [contactOpen, setContactOpen] = useState(false)
-  const [point] = useState(0);
+  const [point, setBalance] = useState(0);
 
   useEffect(() => {
     async function checkLogin() {
       try {
         const res = await fetch('/api/me', { credentials: 'include' })
-        setIsLoggedIn(res.ok)
+        if (res.ok) {
+          setIsLoggedIn(true)
+        } else {
+          setIsLoggedIn(false)
+        }
       } catch {
         setIsLoggedIn(false)
       }
@@ -37,27 +40,14 @@ export default function Navbar() {
       <div className="container mx-auto flex justify-between items-center max-w-7xl px-4">
         
         {/* Logo */}
-        <Head>
-          <link rel="preconnect" href="https://fonts.googleapis.com" />
-          <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-          <link
-            href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@100..900&display=swap"
-            rel="stylesheet"
-          />
-          <title>Xyven</title>
-          <meta name="viewport" content="width=device-width, initial-scale=1" />
-          <meta name="description" content="Fan My - Your Fan Page Solution" />
-          <link rel="icon" href="/img/image.png" />
-        </Head>
-        
         <div className="flex items-center space-x-2 mr-8">
           <Link href="/">
-            <Img src="/img/image.png" alt="logo" width={40} height={40} className="h-10 w-auto" />
+            <Image src="/img/image.png" alt="logo" width={40} height={40} />
           </Link>
         </div>
          
         {/* Desktop Menu */}
-        <ul className="hidden md:flex space-x-5 items-center flex-1 justify-start" >
+        <ul className="hidden md:flex space-x-5 items-center flex-1 justify-start">
           <li className="flex items-center space-x-1 text-sm text-gray-700 hover:text-[#17aeff] font-medium">
             <Link href="/" className="flex items-center space-x-1">
               <Home className="h-4 w-4" />
@@ -71,14 +61,12 @@ export default function Navbar() {
               <span>รายการ</span>
             </Link>
           </li>
-
           <li className="text-sm text-gray-700 hover:text-[#17aeff] font-medium">
             <Link href="/list" className="flex items-center space-x-1">
               <TableOfContents className="h-4 w-4" />
               <span>กิจกรรม</span>
             </Link>
           </li>
-
           <li className="text-sm text-gray-700">
             <Link href="/amount" className="flex items-center space-x-1 hover:text-[#17aeff] font-medium">
               <CircleDollarSign className="h-4 w-4" />
@@ -102,14 +90,16 @@ export default function Navbar() {
             <>
               <div className="flex items-center px-2.5 py-3.5 bg-[#a9e1ff] text-sky-700 rounded-full border border-sky-500 shadow-sm hover:bg-[#a9e1ff] transition text-xs h-8 min-h-0"> 
                 <DollarSign className="h-4 w-4" />
-                <span className="text-xs font-medium">{new Intl.NumberFormat("th-TH").format(point)}</span>
+                <span className="text-xs font-medium">
+                  {new Intl.NumberFormat("th-TH").format(point)}
+                </span>
               </div>
               <ProfileDropdown />
             </>
           ) : (
             <Link href="#">
               <Button
-                className="w-full rounded-[10px] bg-gradient-to-r border-none transition-opacity duration-300 text-white hover:opacity-90 px-4 py-2" 
+                className="w-full rounded-[10px] border-none transition-opacity duration-300 text-white hover:opacity-90 px-4 py-2"
                 style={{ background: 'linear-gradient(90deg, #17aeff 0%, #c2e4ff 100%)' }}
               >
                 เริ่มต้นกับเรา
@@ -131,22 +121,18 @@ export default function Navbar() {
               <div className="pt-15 space-y-5">
                 <ul className="flex flex-col space-y-6 text-gray-700 ">
                   <li className="flex items-center space-x-1 font-medium">
-                    <div className="h-5 w-5 " />
                     <Home className="h-4 w-4" />
                     <Link href="/">หน้าหลัก</Link>
                   </li>
                   <li className="flex items-center space-x-1 font-medium">
-                    <div className="h-5 w-5 " />
                     <ClipboardList className="h-4 w-4" />
                     <Link href="/list">รายการ</Link>
                   </li>
                   <li className="flex items-center space-x-1 font-medium">
-                    <div className="h-5 w-5 " />
                     <TableOfContents className="h-4 w-4" />
                     <Link href="/list">กิจกรรม</Link>
                   </li>
                   <li className="flex items-center space-x-1 font-medium">
-                    <div className="h-5 w-5" />
                     <CircleDollarSign className="h-4 w-4" />
                     <Link href="/amount">ยอดเงิน</Link>
                   </li>
@@ -154,7 +140,6 @@ export default function Navbar() {
                     onClick={() => setContactOpen(true)} 
                     className="flex items-center space-x-1 font-medium cursor-pointer"
                   >
-                    <div className="h-5 w-5" />
                     <MessageSquare className="h-4 w-4" />
                     <span>ติดต่อ</span>
                   </li>
